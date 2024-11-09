@@ -25,16 +25,10 @@ class ProductRefrigeratorController extends Controller
     ]);
 
     if ($request->hasFile('image')) {
-        // Store the image in the 'public' disk and get the path
         $imagePath = $request->file('image')->store('images', 'public');
-        // Convert the image path to a full URL
         $validatedData['image'] = url('storage/' . $imagePath);
     }
-
-    // Create the product in the database
     $product = ProductRefrigerator::create($validatedData);
-
-    // Return the product data including the image URL
     return response()->json($product, 201);
 }
 
@@ -46,21 +40,17 @@ public function update(Request $request, $id)
             return response()->json(['message' => 'Product not found'], 404);
         }
 
-        // Update validation rules: title and image are required, others are optional
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string', // Make description optional
-            'link-shopee' => 'nullable|string', // Make link-shopee optional
-            'link-tokopedia' => 'nullable|string', // Make link-tokopedia optional
-            'whatsapp' => 'nullable|string|max:15', // Make whatsapp optional
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Make image optional
+            'description' => 'nullable|string',
+            'link-shopee' => 'nullable|string',
+            'link-tokopedia' => 'nullable|string',
+            'whatsapp' => 'nullable|string|max:15',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Only update the image if a new one is uploaded
         if ($request->hasFile('image')) {
-            // Store the image in the 'public' disk and get the path
             $imagePath = $request->file('image')->store('images', 'public');
-            // Convert the image path to a full URL
             $validatedData['image'] = url('storage/' . $imagePath);
         }
 

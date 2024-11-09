@@ -4,8 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\LandingPageProductRefrigeratorController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,15 +17,21 @@ use App\Http\Controllers\LandingPageProductRefrigeratorController;
 |
 */
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+// In routes/web.php or add 'web' middleware if you keep it in api.php
+// Route::post('/login', [UserController::class, 'login']);
+
+
+Route::post('/signup', 'AuthController@signup')->middleware('verify.csrf.body');
+
+
+Route::get('/csrf-token', function () {
+    return response()->json(['csrfToken' => csrf_token()]);
 });
 
-Route::get('/', [LandingPageProductRefrigeratorController::class, 'index'])->name('landing.page');
+Route::get('/sanctum/csrf-cookie', function () {
+    return response()->json(['message' => 'CSRF cookie set']);
+});
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

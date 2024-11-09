@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Make sure axios is imported
+import NavbarContent from './NavbarContent/NavbarContent';
 
-function AdminDashboard() {
+function ProductRefrigerator() {
   const [products, setProducts] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [newProduct, setNewProduct] = useState({
@@ -138,6 +139,8 @@ function AdminDashboard() {
           <button onClick={handleLogout}>Logout</button>
           <h2>Admin Dashboard</h2>
 
+          <NavbarContent/>
+
           <form onSubmit={handleAddOrUpdateProduct}>
               <div>
                   <label>Title:</label>
@@ -253,4 +256,4 @@ function AdminDashboard() {
   );
 }
 
-export default AdminDashboard;
+export default ProductRefrigerator;
